@@ -2,7 +2,7 @@
 	$newpath = "/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin";
 	$precommand = "export PATH=".$newpath." ; ";
 	$adminid = "admin";
-	$consolehtml = "./console.html";
+	$terminalhtml = "./ajaxterm.html";
 
 	if( isset($_GET["init"]) ){
 		// username
@@ -30,7 +30,7 @@
 		exit;
 	}elseif( isset($_GET["logout"]) ){
 		header('HTTP/1.1 401 Unauthorized');
-		die("<a href='$consolehtml'>console</a>");
+		die("<a href='$terminalhtml'>terminal</a>");
 	}elseif( isset($_POST["command"]) ){
 		ob_start();
 		if( isset($_SERVER["REMOTE_USER"]) and $_SERVER["REMOTE_USER"] == $adminid ){
