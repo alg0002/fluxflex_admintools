@@ -1,0 +1,10 @@
+#project initializer for alg-testmodules
+
+[replace]
+public_html/ajaxterm/.htaccess	DUMMY_PROJECT_NAME	PROJECT_NAME
+
+[setup]
+perl -e 'print "guest:".crypt("guest","aA")."\n";' >.htpasswd
+perl -e 'print "admin:".crypt("12345","aA")."\n";' >>.htpasswd
+chmod 604 .htpasswd
+ls -la

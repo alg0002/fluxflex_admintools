@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head> 
+<title>ajax terminal</title>
+<style type="text/css">
+<!--
+* {
+	margin:0px;
+	padding:0px;
+	font-family: "MS Gothic",monospace;
+	font-size: 10pt;
+}
+::selection {
+	color: #000;
+	background: #FFF;
+}
+::-moz-selection {
+	color: #000;
+	background: #FFF;
+}
+#header {
+	color: #FFF;
+	background: #009;
+	width: 600px;
+	text-align: center;
+	font-weight: bold;
+}
+#menubar {
+	color: #000;
+	background: #CCC;
+	width: 600px;
+}
+#console {
+	color: #FFF;
+	background: #000;
+	width: 600px;
+	height:400px;
+	overflow: scroll;
+}
+#entry {
+	display: inline;
+}
+#command {
+	color: #FFF;
+	background: #333;
+	border: 0px;
+}
+#command:focus {
+	outline: none;
+}
+#history {
+	display: none;
+}
+#currentpath {
+	display: none;
+}
+-->
+</style>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript">
+var chi=0;
+$(function(){
+	var p;
+	$("#header").text("");
+	$("#header").load(
+		"./ajaxterm.php?init=1",
+		null,
+		function(){
+			var a = $("#header").text().split(" ");
+			a.shift();
+			$("#currentpath").text(a.join(" "));
+		}
+	);
+	$("#command").focus();
+
+	$("#console").submit(function(){
+		var a;
+		var r;
+		var p;
+		var d;
+		var h;
+		// display command
+		$("#console > *:last > *:last").before("<pre>\n&gt;&nbsp;"+$.escapeHTML($("#command").val())+"\n</pre>\n");
+		// display result
+		$.post("ajaxterm.php", {command:'cd '+$("#currentpath").text()+' ; '+$("#command").val()}, function(data,status){
+			if( status == "success" ){
+				r = data.split("\n");
+				if( r[r.length-1] == "" ){
+					r.pop();
+				}
+				p = r.pop();
+				$("#console > *:last > *:last").prev().append(r.join("\n"));
+				$("#currentpath").text(p);
+				a = $("#header").text().split(" ");
+				$("#header").text(a.shift()+' '+p);
+				// scroll
+				var targetOffset = $("#console > *:last").height();
+				$("#console").animate({scrollTop: targetOffset}, 100);
+				// focus
+				$("#command").focus();
+			}
+		});
+		// add to history
+		h=$.gethistories();
+		h[h.length]=$("#command").val();
+		$("#history").text(h.join("\n"));
+		chi=h.length;
+		// clear command
+		$("#command").val("");
+		return false;
+	});
+
+	$("#command").keydown(function(e){
+		var h;
+		if(e.keyCode == 38){	//up
+			if( chi>0 ){
+				chi-=1;
+				h=$.gethistories();
+				$("#command").val(h[chi]);
+			}
+		}else if(e.keyCode == 40){	//down
+			h=$.gethistories();
+			if( h.length > chi+1 ){
+				chi+=1;
+				$("#command").val(h[chi]);
+			}else{
+				chi=h.length;
+				$("#command").val('');
+			}
+		}
+	});
+
+	// html tag escape
+	$.escapeHTML = function(val) {
+		return $("<pre>").text(val).html();
+	}
+
+	// clear screen
+	$.clearscreen = function() {
+		while( $("#console > *:last > *").length > 1 ){
+			$("#console > *:last > *:first").remove();
+		}
+		$("#command").focus();
+		return false;
+	}
+
+	// get command histories
+	$.gethistories = function() {
+		var h=$("#history").text().split("\n");
+		if( h[0] == '' ){
+			h.shift();
+		}
+		return h;
+	}
+})
+</script>
+</head>
+<body>
+<div id="header">
+hostname : username : currentpath
+</div>
+<div id="menubar">
+<a href="#" onclick="$.clearscreen();">Clear</a>&nbsp;<a href="./ajaxterm.php?logout=1">Logout</a>&nbsp;
+</div>
+<div id="console">
+<div>
+<pre>
+&gt;&nbsp;<form id="entry"><input type="text" id="command" name="command" size="80"></input></form>
+</pre>
+</div>
+</div>
+<pre id="history"></pre>
+<pre id="currentpath"></pre>
+</body>
+</html>
