@@ -5,14 +5,17 @@
 	<title>flxcron</title>
 </head>
 <body>
-	<form method="POST">
-	<textarea name="crontab" rows="10" cols="60">
 <?php
 	if( isset($_POST["crontab"]) ){
 		$ct = fopen("../../.crontab","w");
 		@fwrite($ct,$_POST["crontab"],strlen($_POST["crontab"]));
 		fclose($ct);
+		print trim( htmlspecialchars( shell_exec("crontab ../../.crontab") ) );
+		print "<br>";
 	}
+?>
+	<form method="POST">
+	<textarea name="crontab" rows="10" cols="60"><?php
 	if( file_exists("../../.crontab") ){
 		$ct = fopen("../../.crontab", "r");
 		print fread($ct);
@@ -21,8 +24,7 @@
 		touch("../../.crontab");
 		chmod("../../.crontab",0604);
 	}
-?>
-	</textarea>
+?></textarea>
 	<input type="submit" value="submit">
 	</form>
 </body>
