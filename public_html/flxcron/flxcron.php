@@ -7,8 +7,14 @@
 <body>
 <?php
 	if( isset($_POST["crontab"]) ){
+		$crontab = $_POST["crontab"];
+		$crontab = str_replace("\r\n","\n",$crontab);
+		if( substr($crontab,-1) != "\n" ){
+			$crontab = $crontab."\n";
+		}
 		$ct = fopen("../../.crontab","w");
-		@fwrite($ct,$_POST["crontab"],strlen($_POST["crontab"]));
+		@fwrite($ct,$crontab,strlen($crontab));
+
 		fclose($ct);
 		print trim( htmlspecialchars( shell_exec("/usr/bin/crontab ../../.crontab") ) );
 		print "<br>";
