@@ -10,7 +10,7 @@
 		$ct = fopen("../../.crontab","w");
 		@fwrite($ct,$_POST["crontab"],strlen($_POST["crontab"]));
 		fclose($ct);
-		print trim( htmlspecialchars( shell_exec("crontab ../../.crontab") ) );
+		print trim( htmlspecialchars( shell_exec("/usr/bin/crontab ../../.crontab") ) );
 		print "<br>";
 	}
 ?>
