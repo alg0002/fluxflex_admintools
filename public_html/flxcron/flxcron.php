@@ -18,7 +18,7 @@
 	<textarea name="crontab" rows="10" cols="60"><?php
 	if( file_exists("../../.crontab") ){
 		$ct = fopen("../../.crontab", "r");
-		print fread($ct);
+		print fread($ct,filesize("../../.crontab"));
 		fclose($ct);
 	}else{
 		touch("../../.crontab");
