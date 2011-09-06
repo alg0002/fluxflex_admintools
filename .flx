@@ -1,4 +1,4 @@
-#project initializer for alg-testmodules
+#project initializer for fluxflex_admintools
 
 [replace]
 public_html/ajaxterm/.htaccess	DUMMY_PROJECT_NAME	PROJECT_NAME
