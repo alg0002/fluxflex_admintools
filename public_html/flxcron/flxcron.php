@@ -8,8 +8,10 @@
 	<form method="POST">
 	<textarea name="crontab" rows="10" cols="60">
 <?php
-	if( isset($_POST["set"]) ){
-		
+	if( isset($_POST["crontab"]) ){
+		$ct = fopen("../../.crontab","w");
+		@fwrite($ct,$_POST["crontab"],strlen($_POST["crontab"]));
+		fclose($ct);
 	}
 	if( file_exists("../../.crontab") ){
 		$ct = fopen("../../.crontab", "r");
