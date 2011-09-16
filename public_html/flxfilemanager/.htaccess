@@ -2,6 +2,7 @@ AuthUserFile /home/DUMMY_PROJECT_NAME/.htpasswd
 AuthGroupFile /dev/null
 AuthName "Please enter your ID and password."
 AuthType Basic
+SSLRequireSSL
 
 require valid-user
 
@@ -9,12 +10,12 @@ require valid-user
 	deny from all
 </Files>
 
-SetEnvIf SERVER_PORT 443 allowHttpsOnly
-<Files "*">
-	Order deny,allow
-	deny from all
-	allow from env=allowHttpsOnly
-</Files>
+#SetEnvIf SERVER_PORT 443 allowHttpsOnly
+#<Files "*">
+#	Order deny,allow
+#	deny from all
+#	allow from env=allowHttpsOnly
+#</Files>
 
 #<IfModule mod_rewrite.c>
 #    RewriteEngine on
