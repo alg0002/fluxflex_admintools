@@ -10,9 +10,11 @@ require valid-user
 </Files>
 
 SetEnvIf SERVER_PORT 443 allowHttpsOnly
-order deny,allow
-deny from all
-allow from env=allowHttpsOnly
+<Files "*">
+	Order deny,allow
+	deny from all
+	allow from env=allowHttpsOnly
+</Files>
 
 #<IfModule mod_rewrite.c>
 #    RewriteEngine on
