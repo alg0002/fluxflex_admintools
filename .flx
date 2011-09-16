@@ -3,6 +3,7 @@
 [replace]
 public_html/ajaxterm/.htaccess	DUMMY_PROJECT_NAME	PROJECT_NAME
 public_html/flxcron/.htaccess	DUMMY_PROJECT_NAME	PROJECT_NAME
+public_html/flxfilemanager/.htaccess	DUMMY_PROJECT_NAME	PROJECT_NAME
 
 [setup]
 perl -e 'print "admin:".crypt("12345","aA")."\n";' >.htpasswd

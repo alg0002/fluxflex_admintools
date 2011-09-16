@@ -1,0 +1,17 @@
+AuthUserFile /home/DUMMY_PROJECT_NAME/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Please enter your ID and password."
+AuthType Basic
+
+require valid-user
+
+<Files ~ "^.(htpasswd|htaccess)$">
+	deny from all
+</Files>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} 80
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+</IfModule>
+s
