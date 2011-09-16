@@ -9,16 +9,3 @@ require valid-user
 <Files ~ "^.(htpasswd|htaccess)$">
 	deny from all
 </Files>
-
-#SetEnvIf SERVER_PORT 443 allowHttpsOnly
-#<Files "*">
-#	Order deny,allow
-#	deny from all
-#	allow from env=allowHttpsOnly
-#</Files>
-
-#<IfModule mod_rewrite.c>
-#    RewriteEngine on
-#    RewriteCond %{SERVER_PORT} 80
-#    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
-#</IfModule>

@@ -2,6 +2,7 @@ AuthUserFile /home/DUMMY_PROJECT_NAME/.htpasswd
 AuthGroupFile /dev/null
 AuthName "Please enter your ID and password."
 AuthType Basic
+SSLRequireSSL
 
 require valid-user
 
